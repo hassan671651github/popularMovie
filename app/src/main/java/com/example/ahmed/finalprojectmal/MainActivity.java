@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements Connection {
         if(checkinternetConnection.isConnectingToInternet()) {
             try {
                 favoriteData = getSharedPreferences("favoriteData", Context.MODE_PRIVATE);
-                String link = "http://api.themoviedb.org/3/movie/top_rated?api_key=";
+                String link = "http://api.themoviedb.org/3/movie/top_rated?api_key="+ApiKey.key;
                 jsonparsing(link);
                 setUI();
             }
@@ -81,37 +81,37 @@ public class MainActivity extends AppCompatActivity implements Connection {
 
     public void jsonparsing(String Link) {
 
-            async_class = new Async_Class();
-            String h="";
-            try {
-                h=  async_class.execute(Link).get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-
-            movieList = new ArrayList<>();
-            try {
-                JSONObject jsonObject = new JSONObject(h);
-                JSONArray jsonArray = jsonObject.getJSONArray("results");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    MovieDB movieDB = new MovieDB();
-                    JSONObject object1 = jsonArray.getJSONObject(i);
-                    movieDB.setTitle(object1.getString("title"));
-                    movieDB.setPoster("http://image.tmdb.org/t/p/w185/" + object1.getString("poster_path"));
-                    movieDB.setDescription(object1.getString("overview"));
-                    movieDB.setDate(object1.getString("release_date"));
-                    movieDB.setRating(object1.getString("vote_average") + "/10");
-                    movieDB.setId(object1.getInt("id"));
-                    movieList.add(movieDB);
-                }
-
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        async_class = new Async_Class();
+        String h="";
+        try {
+            h=  async_class.execute(Link).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
+
+        movieList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(h);
+            JSONArray jsonArray = jsonObject.getJSONArray("results");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                MovieDB movieDB = new MovieDB();
+                JSONObject object1 = jsonArray.getJSONObject(i);
+                movieDB.setTitle(object1.getString("title"));
+                movieDB.setPoster("http://image.tmdb.org/t/p/w185/" + object1.getString("poster_path"));
+                movieDB.setDescription(object1.getString("overview"));
+                movieDB.setDate(object1.getString("release_date"));
+                movieDB.setRating(object1.getString("vote_average") + "/10");
+                movieDB.setId(object1.getInt("id"));
+                movieList.add(movieDB);
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
@@ -127,9 +127,9 @@ public class MainActivity extends AppCompatActivity implements Connection {
             return new ArrayList<>(set);
         }
 
-    catch (Exception ex){
-        Toast.makeText(this,"retrive",Toast.LENGTH_LONG).show();
-    }
+        catch (Exception ex){
+            Toast.makeText(this,"retrive",Toast.LENGTH_LONG).show();
+        }
         return null;
     }
     private void  saveFavoriteList(ArrayList<String> myfavoriteList){
@@ -149,12 +149,12 @@ public class MainActivity extends AppCompatActivity implements Connection {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode==100){
-                try {
-                   String id = data.getIntExtra("id",1)+"";
-                    boolean set = data.getBooleanExtra("set", false);
-                  HandleFavoriteData(set,id);
-                }
-                catch (Exception ex){ }
+            try {
+                String id = data.getIntExtra("id",1)+"";
+                boolean set = data.getBooleanExtra("set", false);
+                HandleFavoriteData(set,id);
+            }
+            catch (Exception ex){ }
         }
 
 
@@ -188,44 +188,44 @@ public class MainActivity extends AppCompatActivity implements Connection {
 
     @Override
     public void connect(int posirion,String sender) {
-if(sender.equals("mainfragment")){
-        if (isTowPane) {
-            DetaieldFragment fragment = new DetaieldFragment();
-            fragment.setConnection(this);
-            Bundle bundle = new Bundle();
-            bundle.putString("title",movieList.get(posirion).getTitle() );
-            bundle.putString("poster", movieList.get(posirion).getPoster());
-            bundle.putString("overview", movieList.get(posirion).getDescription());
-            bundle.putString("rating", movieList.get(posirion).getRating());
-            bundle.putString("date", movieList.get(posirion).getDate().split("-")[0]);
-            bundle.putString("time", movieList.get(posirion).getTime());
-            bundle.putInt("id", movieList.get(posirion).getId());
-            ArrayList<String>arrayList=getFavoriteList();
-            if(arrayList!=null&&arrayList.contains(movieList.get(posirion).getId()+""))
-               bundle.putBoolean("isFavorite",true);
-            else
-                bundle.putBoolean("isFavorite", false);
-            fragment.setArguments(bundle);
-            getFragmentManager().beginTransaction().replace(R.id.frame2, fragment).commit();
-        } else {
-            DetaieldActivity detaieldActivity=new DetaieldActivity();
-            Intent i = new Intent(this, DetaieldActivity.class);
-            i.putExtra("isFavorite",true);
-            i.putExtra("title",movieList.get(posirion).getTitle() );
-            i.putExtra("poster", movieList.get(posirion).getPoster());
-            i.putExtra("overview", movieList.get(posirion).getDescription());
-            i.putExtra("rating", movieList.get(posirion).getRating());
-            i.putExtra("date", movieList.get(posirion).getDate().split("-")[0]);
-           i.putExtra("time", movieList.get(posirion).getTime());
-            i.putExtra("id", movieList.get(posirion).getId());
-            ArrayList<String>arrayList=getFavoriteList();
-            if(arrayList!=null&&arrayList.contains(movieList.get(posirion).getId()+""))
-            i.putExtra("isFavorite",true);
-            else
-                i.putExtra("isFavorite",false);
+        if(sender.equals("mainfragment")){
+            if (isTowPane) {
+                DetaieldFragment fragment = new DetaieldFragment();
+                fragment.setConnection(this);
+                Bundle bundle = new Bundle();
+                bundle.putString("title",movieList.get(posirion).getTitle() );
+                bundle.putString("poster", movieList.get(posirion).getPoster());
+                bundle.putString("overview", movieList.get(posirion).getDescription());
+                bundle.putString("rating", movieList.get(posirion).getRating());
+                bundle.putString("date", movieList.get(posirion).getDate().split("-")[0]);
+                bundle.putString("time", movieList.get(posirion).getTime());
+                bundle.putInt("id", movieList.get(posirion).getId());
+                ArrayList<String>arrayList=getFavoriteList();
+                if(arrayList!=null&&arrayList.contains(movieList.get(posirion).getId()+""))
+                    bundle.putBoolean("isFavorite",true);
+                else
+                    bundle.putBoolean("isFavorite", false);
+                fragment.setArguments(bundle);
+                getFragmentManager().beginTransaction().replace(R.id.frame2, fragment).commit();
+            } else {
+                DetaieldActivity detaieldActivity=new DetaieldActivity();
+                Intent i = new Intent(this, DetaieldActivity.class);
+                i.putExtra("isFavorite",true);
+                i.putExtra("title",movieList.get(posirion).getTitle() );
+                i.putExtra("poster", movieList.get(posirion).getPoster());
+                i.putExtra("overview", movieList.get(posirion).getDescription());
+                i.putExtra("rating", movieList.get(posirion).getRating());
+                i.putExtra("date", movieList.get(posirion).getDate().split("-")[0]);
+                i.putExtra("time", movieList.get(posirion).getTime());
+                i.putExtra("id", movieList.get(posirion).getId());
+                ArrayList<String>arrayList=getFavoriteList();
+                if(arrayList!=null&&arrayList.contains(movieList.get(posirion).getId()+""))
+                    i.putExtra("isFavorite",true);
+                else
+                    i.putExtra("isFavorite",false);
 
-            startActivityForResult(i,100);
-        }}
+                startActivityForResult(i,100);
+            }}
 
 
 
@@ -234,7 +234,7 @@ if(sender.equals("mainfragment")){
     @Override
     public void connect(int id, boolean state, String sender) {
         if(sender.equals("detailedFragment")){
-        HandleFavoriteData(state,id+"");
+            HandleFavoriteData(state,id+"");
         }
     }
 
@@ -256,21 +256,21 @@ if(sender.equals("mainfragment")){
         //noinspection SimplifiableIfStatement
         if (id == R.id.top_rated) {
 
-                try {
-                    String link = "http://api.themoviedb.org/3/movie/top_rated?api_key=";
-                    jsonparsing(link);
-                    setUI();
-                }catch (Exception ex){}
+            try {
+                String link = "http://api.themoviedb.org/3/movie/top_rated?api_key="+ApiKey.key;
+                jsonparsing(link);
+                setUI();
+            }catch (Exception ex){}
 
             return true;
         }
         if(id==R.id.popular){
 
-                try {
-                    String link = "http://api.themoviedb.org/3/movie/popular?api_key=";
-                    jsonparsing(link);
-                    setUI();
-                }catch (Exception ex){}
+            try {
+                String link = "http://api.themoviedb.org/3/movie/popular?api_key="+ApiKey.key;
+                jsonparsing(link);
+                setUI();
+            }catch (Exception ex){}
             return true;
         }
         if(id==R.id.favorite){
@@ -287,48 +287,48 @@ if(sender.equals("mainfragment")){
             for(int i=0;i<IdList.size();i++){
 
                 arrayList.add(getMovie("http://api.themoviedb.org/3/movie/" +
-                        IdList.get(i)+"?api_key="));
-                    }
+                        IdList.get(i)+"?api_key="+ApiKey.key));
+            }
 
 
 
             movieList=arrayList;
             setUI();
 
-    return true;
-     }
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
-public MovieDB getMovie(String Link) {
+    public MovieDB getMovie(String Link) {
 
-    async_class = new Async_Class();
-    String h = "";
-    try {
-        h = async_class.execute(Link).get();
-    } catch (InterruptedException e) {
-        e.printStackTrace();
-    } catch (ExecutionException e) {
-        e.printStackTrace();
+        async_class = new Async_Class();
+        String h = "";
+        try {
+            h = async_class.execute(Link).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        MovieDB movieDB = new MovieDB();
+        try {
+            JSONObject object1 = new JSONObject(h);
+            movieDB.setTitle(object1.getString("title"));
+            movieDB.setPoster("http://image.tmdb.org/t/p/w185/" + object1.getString("poster_path"));
+            movieDB.setDescription(object1.getString("overview"));
+            movieDB.setDate(object1.getString("release_date"));
+            movieDB.setTime("120min");
+            movieDB.setRating(object1.getString("vote_average") + "/10");
+            movieDB.setId(object1.getInt("id"));
+            movieList.add(movieDB);
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+
+        return movieDB;
     }
-
-    MovieDB movieDB = new MovieDB();
-    try {
-        JSONObject object1 = new JSONObject(h);
-        movieDB.setTitle(object1.getString("title"));
-        movieDB.setPoster("http://image.tmdb.org/t/p/w185/" + object1.getString("poster_path"));
-        movieDB.setDescription(object1.getString("overview"));
-        movieDB.setDate(object1.getString("release_date"));
-        movieDB.setTime("120min");
-        movieDB.setRating(object1.getString("vote_average") + "/10");
-        movieDB.setId(object1.getInt("id"));
-        movieList.add(movieDB);
-    } catch (JSONException e1) {
-        e1.printStackTrace();
-    }
-
-return movieDB;
-}
 
 }
 

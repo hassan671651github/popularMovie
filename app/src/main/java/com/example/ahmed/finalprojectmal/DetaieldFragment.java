@@ -67,16 +67,16 @@ public class DetaieldFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-public void favoriteAnimation(boolean isFavorite ){
-    if(isFavorite) {
-        favorite.setBackgroundColor(Color.RED);
-        favorite.setText("MARK AS\nUNFAVORITE");
+    public void favoriteAnimation(boolean isFavorite ){
+        if(isFavorite) {
+            favorite.setBackgroundColor(Color.RED);
+            favorite.setText("MARK AS\nUNFAVORITE");
+        }
+        else{
+            favorite.setBackgroundColor(Color.GREEN);
+            favorite.setText("MARK AS\nFAVORITE");
+        }
     }
-    else{
-        favorite.setBackgroundColor(Color.GREEN);
-        favorite.setText("MARK AS\nFAVORITE");
-    }
-}
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +99,7 @@ public void favoriteAnimation(boolean isFavorite ){
     ListView listView;
     ListView ListView3;
     Button favorite;
-     int id;
+    int id;
     Boolean isFavorite;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -107,16 +107,16 @@ public void favoriteAnimation(boolean isFavorite ){
         b=getArguments();
         title=(TextView)fragment.findViewById(R.id.movie_title);
         poster=(ImageView)fragment.findViewById(R.id.movie_poster);
-         overview=(TextView)fragment.findViewById(R.id.movie_overview);
-         date=(TextView)fragment.findViewById(R.id.movie_date);
+        overview=(TextView)fragment.findViewById(R.id.movie_overview);
+        date=(TextView)fragment.findViewById(R.id.movie_date);
         rate=(TextView)fragment.findViewById(R.id.movie_rating);
         listView=(ListView)fragment.findViewById(R.id.listView);
-         ListView3=(ListView)fragment.findViewById(R.id.listView3);
-         favorite=(Button)fragment.findViewById(R.id.favoriteButton);
+        ListView3=(ListView)fragment.findViewById(R.id.listView3);
+        favorite=(Button)fragment.findViewById(R.id.favoriteButton);
         try {
 
 
-             id=b.getInt("id");
+            id=b.getInt("id");
             isFavorite=b.getBoolean("isFavorite");
             title.setText(b.getString("title"));
             overview.setText(b.getString("overview"));
@@ -125,11 +125,11 @@ public void favoriteAnimation(boolean isFavorite ){
             favoriteAnimation(isFavorite);
             Picasso.with(getActivity()).load(b.getString("poster")).into(poster);
 
-           String result=new Async_Class().execute("http://api.themoviedb.org/3/movie/"+id+"/" +
-                   "videos?api_key=").get();
+            String result=new Async_Class().execute("http://api.themoviedb.org/3/movie/"+id+"/" +
+                    "videos?api_key="+ApiKey.key).get();
             JSONObject myjson=new JSONObject(result);
             final JSONArray jsonArray=myjson.getJSONArray("results");
-         final    ArrayList<Trailer>trailerArrayList=new ArrayList<>();
+            final    ArrayList<Trailer>trailerArrayList=new ArrayList<>();
             for(int i=0;i<jsonArray.length();i++){
                 JSONObject jsonObject=jsonArray.getJSONObject(i);
                 Trailer trailer=new Trailer();
@@ -156,34 +156,34 @@ public void favoriteAnimation(boolean isFavorite ){
                 }
             });
 
-                String result2 = new Async_Class().execute("http://api.themoviedb.org/3/movie/" + id +
-                        "/reviews?api_key=").get();
-                JSONObject reviewsJson = new JSONObject(result2);
-                JSONArray reviewJsonArray = reviewsJson.getJSONArray("results");
-                ArrayList<reviews> reviewsesList = new ArrayList<>();
-                for (int i = 0; i < reviewJsonArray.length(); i++) {
-                    reviews myreviews = new reviews();
-                    myreviews.setAuther(reviewJsonArray.getJSONObject(i).getString("author"));
-                    myreviews.setContent(reviewJsonArray.getJSONObject(i).getString("content"));
-                    reviewsesList.add(myreviews);
-                }
-                CustomAdapterReviews customAdapterReviews = new CustomAdapterReviews(reviewsesList, getActivity());
-                ListView3.setAdapter(customAdapterReviews);
+            String result2 = new Async_Class().execute("http://api.themoviedb.org/3/movie/" + id +
+                    "/reviews?api_key="+ApiKey.key).get();
+            JSONObject reviewsJson = new JSONObject(result2);
+            JSONArray reviewJsonArray = reviewsJson.getJSONArray("results");
+            ArrayList<reviews> reviewsesList = new ArrayList<>();
+            for (int i = 0; i < reviewJsonArray.length(); i++) {
+                reviews myreviews = new reviews();
+                myreviews.setAuther(reviewJsonArray.getJSONObject(i).getString("author"));
+                myreviews.setContent(reviewJsonArray.getJSONObject(i).getString("content"));
+                reviewsesList.add(myreviews);
+            }
+            CustomAdapterReviews customAdapterReviews = new CustomAdapterReviews(reviewsesList, getActivity());
+            ListView3.setAdapter(customAdapterReviews);
 
             favorite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(isFavorite)
                     {
-                    isFavorite=false;
+                        isFavorite=false;
                         connection.connect(id, isFavorite, "detailedFragment");
-                     favorite.setBackgroundColor(Color.GREEN);
+                        favorite.setBackgroundColor(Color.GREEN);
                     }
-                  else {
-                             isFavorite=true;
-                              connection.connect(id, isFavorite, "detailedFragment");
-                               favorite.setBackgroundColor(Color.RED);
-                           }
+                    else {
+                        isFavorite=true;
+                        connection.connect(id, isFavorite, "detailedFragment");
+                        favorite.setBackgroundColor(Color.RED);
+                    }
                     favoriteAnimation(isFavorite);
                 }
             });
@@ -211,27 +211,27 @@ public void favoriteAnimation(boolean isFavorite ){
                     return true;
                 }
             });
-ListView3.setOnTouchListener(new ListView.OnTouchListener() {
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        int action = event.getAction();
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-                // Disallow ScrollView to intercept touch events.
-                v.getParent().requestDisallowInterceptTouchEvent(true);
-                break;
+            ListView3.setOnTouchListener(new ListView.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    int action = event.getAction();
+                    switch (action) {
+                        case MotionEvent.ACTION_DOWN:
+                            // Disallow ScrollView to intercept touch events.
+                            v.getParent().requestDisallowInterceptTouchEvent(true);
+                            break;
 
-            case MotionEvent.ACTION_UP:
-                // Allow ScrollView to intercept touch events.
-                v.getParent().requestDisallowInterceptTouchEvent(false);
-                break;
-        }
+                        case MotionEvent.ACTION_UP:
+                            // Allow ScrollView to intercept touch events.
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                            break;
+                    }
 
-        // Handle ListView touch events.
-        v.onTouchEvent(event);
-        return true;
-    }
-});
+                    // Handle ListView touch events.
+                    v.onTouchEvent(event);
+                    return true;
+                }
+            });
 
         }
         catch(Exception ex){
