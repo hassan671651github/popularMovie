@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:paddingBottom="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentTop="true">
+        android:divider="@drawable/divider1"
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/titleheight"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/movie_title"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight=".2"
+            android:background="#2cb7ac"
+            android:textSize="@dimen/largeTextSize"
+            android:padding="20dp"
+            android:gravity="center_vertical"
+            android:text="Hello Evry One" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_weight=".3"
+            android:padding="5dp">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/movie_poster"
+                android:layout_weight=".4"
+                android:src="@mipmap/ic_launcher" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".6"
+                android:gravity="center_vertical"
+                android:paddingLeft="50dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="2015"
+                    android:id="@+id/movie_date"
+                    android:textSize="@dimen/mediumTextSize"
+                    android:layout_gravity="left" />
+
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="9.1/10"
+                    android:id="@+id/movie_rating"
+                    android:textSize="@dimen/smallTextSize"
+                    android:layout_gravity="left" />
+
+                <Button
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MAKE AS\nFAVORITE"
+                    android:id="@+id/favoriteButton"
+                    android:layout_gravity="left|center_horizontal"
+                    android:background="#d025cec6" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/overViewHight"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/movie_overview"
+            android:layout_weight=".3"
+            android:padding="5dp"
+            android:text="welcome hassan aboali"
+            android:textSize="@dimen/mediumTextSize" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/linearLayoutHight"
+            android:orientation="vertical">
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="TRAILER"
+    android:textSize="@dimen/mediumTextSize" />
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/listViewHight"
+            android:id="@+id/listView"
+            android:nestedScrollingEnabled="true"
+
+            />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VIEWER"
+                android:textSize="@dimen/mediumTextSize" />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/listViewHight"
+                android:id="@+id/listView3"
+
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
